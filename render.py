@@ -5,10 +5,11 @@ from vectors import Vector
 
 
 camera_position = Vector(0, 0)
-camera_zoom = 0.8
+camera_zoom = 0.3
 
 mesh = QuadCrossMesh((3, 3))
 mesh.translate(Vector(-0.5, -0.5))
+
 
 def render(mesh: Mesh) -> None:
     surface = cairo.ImageSurface(cairo.FORMAT_RGB24, 1000, 1000)
@@ -29,18 +30,18 @@ def render(mesh: Mesh) -> None:
         context.move_to(link.nodes[0].point.x, link.nodes[0].point.y)
         context.line_to(link.nodes[1].point.x, link.nodes[1].point.y)
         context.set_source_rgb(0, 0, 0)
-        context.set_line_width(0.02)
+        context.set_line_width(0.04)
         context.set_line_cap(cairo.LINE_CAP_ROUND)
         context.stroke()
 
     for node in nodes:
-        context.arc(node.point.x, node.point.y, 0.035, 0, tau)
+        context.arc(node.point.x, node.point.y, 0.05, 0, tau)
         context.set_source_rgb(1, 1, 1)
         context.fill_preserve()
         context.set_source_rgb(0, 0, 0)
-        context.set_line_width(0.01)
+        context.set_line_width(0.02)
         context.stroke()
-        context.arc(node.point.x, node.point.y, 0.02, 0, tau)
+        context.arc(node.point.x, node.point.y, 0.025, 0, tau)
         context.set_source_rgb(0, 0, 0)
         context.fill()
 
