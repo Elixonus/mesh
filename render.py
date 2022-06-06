@@ -1,3 +1,4 @@
+from math import tau
 import cairo
 from mesh import Mesh, QuadMesh
 from vectors import Vector
@@ -24,8 +25,17 @@ def render(mesh: Mesh) -> None:
     links = mesh.links
 
     for link in links:
-        context.move_to(link.nodes[0].point.x, link.nodes[1].point.y)
-        context.move_to(link.nodes[0].point.x, link.nodes[1].point.y)
+        context.move_to(link.nodes[0].point.x, link.nodes[0].point.y)
+        context.line_to(link.nodes[1].point.x, link.nodes[1].point.y)
+        context.set_source_rgb(0, 0, 0)
+        context.set_line_width(0.02)
+        context.set_line_cap(cairo.LINE_CAP_ROUND)
+        context.stroke()
+
+    for node in nodes:
+        context.arc(node.point.x, node.point.y, 0.05, 0, tau)
+        context.set_source_rgb(0, 0, 0)
+        context.fill()
 
     surface.write_to_png("render.png")
 
