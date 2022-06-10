@@ -1,7 +1,8 @@
+from math import tau
 import cairo
 from PIL import Image
 import numpy as np
-from mesh import Mesh, QuadMesh, QuadCrossMesh, TriMesh, HexMesh
+from mesh import Mesh
 from vectors import Vector
 
 
@@ -30,6 +31,14 @@ def render(mesh: Mesh) -> None:
         context.set_source_rgb(0, 0, 0)
         context.set_line_width(0.015 / camera_zoom)
         context.set_line_cap(cairo.LINE_CAP_ROUND)
+        context.stroke()
+
+    for node in nodes:
+        context.arc(node.point.x, node.point.y, 0.02 / camera_zoom, 0, tau)
+        context.set_source_rgb(1, 1, 1)
+        context.fill_preserve()
+        context.set_source_rgb(0, 0, 0)
+        context.set_line_width(0.01 / camera_zoom)
         context.stroke()
 
     image = Image.fromarray(np.array(surface.get_data()).reshape((1000, 1000, 4)), mode="RGBA")
