@@ -1,4 +1,5 @@
 from __future__ import annotations
+from math import sqrt
 from vectors import Vector
 
 
@@ -64,6 +65,34 @@ class QuadCrossMesh(Mesh):
                 link = Link(nodes=(nodes_quad[x][y], nodes_quad[x + 1][y + 1]))
                 links.append(link)
                 link = Link(nodes=(nodes_quad[x][y + 1], nodes_quad[x + 1][y]))
+                links.append(link)
+        super().__init__(nodes, links)
+
+
+class TriMesh(Mesh):
+    def __init__(self, grid: tuple[int, int]) -> None:
+        nodes_quad = []
+        for x in range(grid[0] + 1):
+            nodes_quad.append([])
+            for y in range(grid[1] + 1):
+                node = Node(Vector((x + 0.5 * (y % 2)) / grid[0], y * sqrt(3) / (2 * grid[1])))
+                nodes_quad[x].append(node)
+        nodes = [node for nodes_buffer in nodes_quad for node in nodes_buffer]
+        links = []
+        for x in range(grid[0]):
+            for y in range(grid[1] + 1):
+                link = Link(nodes=(nodes_quad[x][y], nodes_quad[x + 1][y]))
+                links.append(link)
+        for x in range(grid[0] + 1):
+            for y in range(grid[1]):
+                link = Link(nodes=(nodes_quad[x][y], nodes_quad[x][y + 1]))
+                links.append(link)
+        for x in range(grid[0]):
+            for y in range(grid[1]):
+                if y % 2 == 0:
+                    link = Link(nodes=(nodes_quad[x][y + 1], nodes_quad[x + 1][y]))
+                else:
+                    link = Link(nodes=(nodes_quad[x][y], nodes_quad[x + 1][y + 1]))
                 links.append(link)
         super().__init__(nodes, links)
 
