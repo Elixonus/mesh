@@ -97,6 +97,14 @@ class TriMesh(Mesh):
         super().__init__(nodes, links)
 
 
+class HexMesh(Mesh):
+    def __init__(self, grid: tuple[int, int]) -> None:
+        mesh = TriMesh(grid)
+        nodes = mesh.nodes
+        links = mesh.links
+        super().__init__(nodes, links)
+
+
 class Node:
     point: Vector
 

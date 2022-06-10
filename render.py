@@ -1,10 +1,10 @@
 from math import tau
 import cairo
-from mesh import Mesh, QuadMesh, QuadCrossMesh, TriMesh
+from mesh import Mesh, QuadMesh, QuadCrossMesh, TriMesh, HexMesh
 from vectors import Vector
 
 
-mesh = TriMesh((4, 4))
+mesh = HexMesh((6, 6))
 mesh.translate(Vector(-0.5, -0.5))
 
 
