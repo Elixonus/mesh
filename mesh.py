@@ -27,7 +27,7 @@ class QuadMesh(Mesh):
         for x in range(grid[0] + 1):
             nodes_quad.append([])
             for y in range(grid[1] + 1):
-                node = Node(Vector(x / grid[0], y / grid[1]))
+                node = Node(Vector(x, y))
                 nodes_quad[x].append(node)
         nodes = [node for nodes_buffer in nodes_quad for node in nodes_buffer]
         links = []
@@ -48,7 +48,7 @@ class QuadCrossMesh(Mesh):
         for x in range(grid[0] + 1):
             nodes_quad.append([])
             for y in range(grid[1] + 1):
-                node = Node(Vector(x / grid[0], y / grid[1]))
+                node = Node(Vector(x, y))
                 nodes_quad[x].append(node)
         nodes = [node for nodes_buffer in nodes_quad for node in nodes_buffer]
         links = []
@@ -75,7 +75,7 @@ class TriMesh(Mesh):
         for x in range(grid[0] + 1):
             nodes_quad.append([])
             for y in range(grid[1] + 1):
-                node = Node(Vector((x + 0.5 * (y % 2)) / grid[0], y * sqrt(3) / (2 * grid[1])))
+                node = Node(Vector((x + 0.5 * (y % 2)), y * sqrt(3) / 2))
                 nodes_quad[x].append(node)
         nodes = [node for nodes_buffer in nodes_quad for node in nodes_buffer]
         links = []
@@ -102,6 +102,24 @@ class HexMesh(Mesh):
         mesh = TriMesh(grid)
         nodes = mesh.nodes
         links = mesh.links
+        for x in range(grid[0] + 1):
+            for y in range(grid[1] + 1):
+                if (x % 3 == 1 and y % 2 == 0) or (x % 3 == 2 and y % 2 == 1):
+                    node = nodes[x * (grid[1] + 1) + y]
+                    removed_links = []
+                    for link in links:
+                        if link.nodes[0] is node or link.nodes[1] is node:
+                            removed_links.append(link)
+                    for link in removed_links:
+                        links.remove(link)
+        removed_nodes = nodes.copy()
+        for link in links:
+            if link.nodes[0] in removed_nodes:
+                removed_nodes.remove(link.nodes[0])
+            if link.nodes[1] in removed_nodes:
+                removed_nodes.remove(link.nodes[1])
+        for node in removed_nodes:
+            nodes.remove(node)
         super().__init__(nodes, links)
 
 

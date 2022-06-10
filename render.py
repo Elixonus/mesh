@@ -4,8 +4,7 @@ from mesh import Mesh, QuadMesh, QuadCrossMesh, TriMesh, HexMesh
 from vectors import Vector
 
 
-mesh = HexMesh((6, 6))
-mesh.translate(Vector(-0.5, -0.5))
+mesh = HexMesh((13, 7))
 
 
 def render(mesh: Mesh) -> None:
@@ -14,7 +13,7 @@ def render(mesh: Mesh) -> None:
     minimum = Vector(min(node.point.x for node in nodes), min(node.point.y for node in nodes))
     maximum = Vector(max(node.point.x for node in nodes), max(node.point.y for node in nodes))
     camera_position = (minimum + maximum) / 2
-    camera_zoom = 0.7 / (max(maximum.x - minimum.x, maximum.y - minimum.y))
+    camera_zoom = 0.9 / (max(maximum.x - minimum.x, maximum.y - minimum.y))
 
     surface = cairo.ImageSurface(cairo.FORMAT_RGB24, 1000, 1000)
     context = cairo.Context(surface)
@@ -31,12 +30,12 @@ def render(mesh: Mesh) -> None:
         context.move_to(link.nodes[0].point.x, link.nodes[0].point.y)
         context.line_to(link.nodes[1].point.x, link.nodes[1].point.y)
         context.set_source_rgb(0, 0, 0)
-        context.set_line_width(0.02 / camera_zoom)
+        context.set_line_width(0.015 / camera_zoom)
         context.set_line_cap(cairo.LINE_CAP_ROUND)
         context.stroke()
 
     for node in nodes:
-        context.arc(node.point.x, node.point.y, 0.05, 0, tau)
+        context.arc(node.point.x, node.point.y, 0.02 / camera_zoom, 0, tau)
         context.set_source_rgb(1, 1, 1)
         context.fill_preserve()
         context.set_source_rgb(0, 0, 0)
