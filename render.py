@@ -1,7 +1,8 @@
-from math import tau
+from math import pi, tau
 import cairo
 from PIL import Image
 import numpy as np
+import matplotlib.pyplot as plt
 from mesh import Mesh
 from vectors import Vector
 
@@ -43,3 +44,16 @@ def render(mesh: Mesh) -> None:
 
     image = Image.fromarray(np.array(surface.get_data()).reshape((1000, 1000, 4)), mode="RGBA")
     image.show()
+
+    densities = np.empty((100, 100))
+    for x in range(100):
+        for y in range(100):
+            search_radius = 2
+            search_area = pi * search_radius ** 2
+            search_point = Vector(minimum.x + (x / (100 - 1)) * (maximum.x - minimum.x),
+                                  minimum.y + (y / (100 - 1)) * (maximum.y - minimum.y))
+            search_count = 0
+            for node in nodes:
+                if search_point.dist(node.point) < search_radius:
+                    search_count += 1
+    density =
