@@ -1,8 +1,7 @@
-from math import pi, tau
+from math import tau
 import cairo
 from PIL import Image
 import numpy as np
-import matplotlib.pyplot as plt
 from mesh import Mesh
 from vectors import Vector
 
